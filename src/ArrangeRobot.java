@@ -6,8 +6,8 @@ public class ArrangeRobot {
 	 * 
 	 */
 	
-	ArrayList<ExamItem> examItems =  new ArrayList();
-	ArrayList<Monitor> allMonitors = new ArrayList();
+	ArrayList<ExamItem> examItems =  new ArrayList<ExamItem>();
+	ArrayList<Monitor> allMonitors = new ArrayList<Monitor>();
 
 
 	public void doArrangement(){
