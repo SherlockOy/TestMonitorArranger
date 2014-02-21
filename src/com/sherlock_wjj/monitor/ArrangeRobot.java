@@ -1,3 +1,4 @@
+package com.sherlock_wjj.monitor;
 
 import java.util.ArrayList;
 
@@ -12,7 +13,7 @@ public class ArrangeRobot {
 
 	public void doArrangement(){
 		//调用IOperations的readXls将数据读入examItems和allMonitors
-        IOperations.readXls(ArrayList<ExamItem> examItem, ArrayList<Monitor> allMonitors);
+        //IOperations.readXls(ArrayList<ExamItem> examItem, ArrayList<Monitor> allMonitors);
         // 
 	}
 
