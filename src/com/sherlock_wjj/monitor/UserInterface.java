@@ -13,8 +13,13 @@ public class UserInterface{
 	 *
 	 */
 	JFrame mainFrame = new JFrame("国际关系学院考务安排系统");
-	final JPanel inputPanel = new JPanel();
-	final JPanel outputPanel = new JPanel();
+	//JPanel mainPanel = new JPanel();
+	JPanel mainSouthPanel = new JPanel();
+	JPanel mainCentralPanel =  new JPanel();
+	CardLayout card = new CardLayout();
+	JPanel inputPanel = new JPanel();
+	JPanel outputPanel = new JPanel();
+	
 	
 	JButton buttonSelectDir = new JButton("打开");
 	JTextField ta = new JTextField(40);
@@ -28,23 +33,131 @@ public class UserInterface{
 
 
 	public void showMainFrame(){
-		//showInputInterface();
-		/*showOutputInterface();
+		mainFrame.setLayout(new BorderLayout());
+		inputPanel.setLayout(new BorderLayout());
+		outputPanel.setLayout(new BorderLayout());
+		mainCentralPanel.setLayout(card);
+		mainCentralPanel.add(inputPanel,"input");
+		mainCentralPanel.add(outputPanel,"output");
 		
-		mainFrame.add(outputPanel);
-		inputPanel.setVisible(false);
-		outputPanel.setVisible(false);*/
 		
-		showInputInterface();
-		//inputPanel.setVisible(false);
-		//showOutputInterface();
-		//outputPanel.setVisible(false);
+		//***************************
+		JPanel inNorthPanel = new JPanel();
+		inNorthPanel.add(ta);
+		inNorthPanel.add(buttonSelectDir);
+		inputPanel.add(inNorthPanel,BorderLayout.NORTH);
+		//buttonSelectDir.setBackground(new Color(250,227,113));
+		//northPanel.setBackground(new Color(250,227,113));
+		//ta.setBackground(new Color(250,227,113));
+		buttonSelectDir.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent event){
+				JFrame jf4fc = new JFrame("国际关系学院考务安排系统");
+				JFileChooser fc = new JFileChooser(".");
+				fc.showDialog(jf4fc,"选择要导入的文件");
+			}
+		});
 		
-		//mainFrame.add(outputPanel, BorderLayout.CENTER);
-		//mainFrame.add(inputPanel, BorderLayout.CENTER);
-		//mainFrame.setComponentZOrder(inputPanel, 0);
-		//inputPanel.setVisible(true);
 		
+		
+		//**Configure south area in frame 
+		//*buttonOK, buttonCancel, and their action listener
+		//**
+		mainSouthPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		mainSouthPanel.add(buttonOK);				
+		mainSouthPanel.add(btnReturnInputInterface);
+		mainSouthPanel.add(buttonCancel);
+		mainSouthPanel.add(btnOutputData);
+		btnReturnInputInterface.setVisible(false);
+		btnOutputData.setVisible(false);
+		buttonOK.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent event) {
+				//**
+				//*Here makes the function call for ArrangeRobot to arrange. 
+				//**
+				card.show(mainCentralPanel, "output");
+				/*mainSouthPanel.remove(buttonOK);
+				mainSouthPanel.remove(buttonCancel);
+				mainSouthPanel.add(btnReturnInputInterface);
+				mainSouthPanel.add(btnOutputData);*/
+				buttonOK.setVisible(false);
+				buttonCancel.setVisible(false);
+				btnReturnInputInterface.setVisible(true);
+				btnOutputData.setVisible(true);
+				mainSouthPanel.validate();				
+			}
+		});
+		buttonCancel.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent event) {
+				mainFrame.dispose();
+				System.exit(0);
+			}
+		});
+		btnReturnInputInterface.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent event) {
+				card.show(mainCentralPanel, "input");
+				/*mainSouthPanel.remove(btnReturnInputInterface);
+				mainSouthPanel.remove(btnOutputData);
+				mainSouthPanel.add(buttonOK);
+				mainSouthPanel.add(buttonCancel);*/
+				buttonOK.setVisible(true);
+				buttonCancel.setVisible(true);
+				btnReturnInputInterface.setVisible(false);
+				btnOutputData.setVisible(false);
+				mainSouthPanel.validate();
+			}
+		});
+		
+		//**
+		//*Configure the central JTabbedPane
+		//*to display Monitors and ExamItem Data
+		//**
+		Object[][] tableData = 
+			{
+				new Object[]{"0001", "李", "信科系", 2},
+				new Object[]{"0002", "苏", "公管系", 3},
+				new Object[]{"0003", "李", "国经系", 1},
+				new Object[]{"0004", "江", "英语系", 3},
+				new Object[]{"0005", "王", "日法系", 2}
+			};
+
+		Object[] columnTitle = {"教师编号", "姓名", "系别", "可监考次数"};
+
+		JTable table = new JTable(tableData , columnTitle);
+		JScrollPane centerScrollPane = new JScrollPane(table);
+		//centerScrollPane.setBackground(new Color(250,227,113));
+		inputPanel.add(centerScrollPane,BorderLayout.CENTER);
+		
+		
+		
+		
+		//*****************OUTPUT*******************
+		//JPanel outSouthPanel = new JPanel();
+		//outSouthPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		//outSouthPanel.add(btnReturnInputInterface);
+		//outSouthPanel.add(btnOutputData);
+		
+		
+		
+		Object[][] tableData2 = 
+			{
+				new Object[]{"c0001", "高数", "教学楼209", "信科系", "信科系",},
+				new Object[]{"c0002", "线代", "教学楼331", "公管系", "信科系",},
+				new Object[]{"c0003", "国关史", "教学楼205", "国经系", "信科系",},
+				new Object[]{"c0004", "精读", "学交1放", "英语系", "信科系",},
+				new Object[]{"c0005", "俄语", "学交语音教室", "日法系", "信科系",}
+			};
+
+		Object[] columnTitle2 = {"课程编号", "课程名称", "考场", "开课系", "监考老师1	"};
+
+		JTable outputtable = new JTable(tableData2 , columnTitle2);
+		JScrollPane outCenterScrollPane = new JScrollPane(outputtable);
+		
+		outputPanel.add(outCenterScrollPane,BorderLayout.CENTER);
+		//outputPanel.add(outSouthPanel, BorderLayout.SOUTH);
+		
+		
+		mainFrame.add(mainCentralPanel, BorderLayout.CENTER);
+		mainFrame.add(mainSouthPanel, BorderLayout.SOUTH);
 		
 		//********Show Window**********
 		Dimension dm = new Dimension(800,640);
@@ -62,7 +175,7 @@ public class UserInterface{
 		
 	}
 
-	public void showInputInterface(){
+	/*public void showInputInterface(){
 		mainFrame.add(inputPanel, BorderLayout.CENTER);
 		inputPanel.setLayout(new BorderLayout());
 		
@@ -97,7 +210,7 @@ public class UserInterface{
 		inputPanel.add(southRightPanel,BorderLayout.SOUTH);
 		buttonOK.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent event) {
-				/*int response=JOptionPane.showConfirmDialog(mainFrame, "是否确认开始安排监考", "提示", JOptionPane.OK_CANCEL_OPTION);
+				int response=JOptionPane.showConfirmDialog(mainFrame, "是否确认开始安排监考", "提示", JOptionPane.OK_CANCEL_OPTION);
 				if (response == JOptionPane.OK_OPTION){
 					//**
 					//*Here makes the function call for ArrangeRobot to arrange. 
@@ -106,7 +219,7 @@ public class UserInterface{
 					
 				}else if(response == JOptionPane.CANCEL_OPTION){
 					JOptionPane.showMessageDialog(null,"您按下了取消按钮");
-				}*/
+				}
 				showOutputInterface();
 			}
 		});
@@ -137,8 +250,8 @@ public class UserInterface{
 		//centerScrollPane.setBackground(new Color(250,227,113));
 		inputPanel.add(centerScrollPane,BorderLayout.CENTER);
 		
-		/*inputPanel.setVisible(true);
-		outputPanel.setVisible(false);*/
+		inputPanel.setVisible(true);
+		outputPanel.setVisible(false);
 		mainFrame.validate();
 	}
 
@@ -177,9 +290,9 @@ public class UserInterface{
 		outputPanel.add(outCenterScrollPane,BorderLayout.CENTER);
 		outputPanel.add(outSouthPanel, BorderLayout.SOUTH);
 		
-		/*inputPanel.setVisible(false);
-		outputPanel.setVisible(true);*/
+		inputPanel.setVisible(false);
+		outputPanel.setVisible(true);
 		mainFrame.validate();
-	}
+	}*/
 
 }
